@@ -48,6 +48,7 @@ export default function Home(props: Props) {
   const [firstPage, setFirstPage] = useState(0);
   const [serverDown, setServerDown] = useState(false);
   const [resultyType, setResultType] = useState('set');
+  // const [domain, setDomain] = useState('http://')
 
   const postStartIndexer = () => {
     const formd = new FormData();
@@ -140,13 +141,14 @@ export default function Home(props: Props) {
           setServerDown(true);
         });
 
-      AxiosProxy.get('/get_csrf/')
+      AxiosProxy.get('/authentication/get_csrf/')
         .then(response => {
           console.log(response.data.csrfToken);
           session.defaultSession.cookies.set({
             url: 'http://localhost:8000',
             name: 'csrftoken',
-            value: response.data.csrfToken
+            value: response.data.csrfToken,
+            expirationDate: 0
           });
           setCookie(response.data.csrfToken);
           return response;

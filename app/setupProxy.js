@@ -11,7 +11,7 @@ module.exports = function(app) {
     router: {
       // when request.headers.host == 'dev.localhost:3000',
       // override target 'http://www.example.org' to 'http://localhost:8000'
-      'localhost:3000': 'http://localhost:8000',
+      'localhost:3000': 'http://localhost:8000'
     }
   };
   // create the proxy (without context)
@@ -22,6 +22,6 @@ module.exports = function(app) {
   // else{
   //     app.use(proxy('/management', {target : 'http://localhost:8000'}));
   // }
-  app.use(proxy('/get_csrf', options));
+  app.use(proxy('/authentication/get_csrf', options));
   app.use(proxy('/iindex', options));
 };
