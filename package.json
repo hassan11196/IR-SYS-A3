@@ -52,8 +52,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "IR-SYS-A1-K173654",
+    "appId": "org.develar.K173654",
     "files": [
       "dist/",
       "node_modules/",

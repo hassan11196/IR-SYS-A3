@@ -53,7 +53,7 @@ export default class MenuBuilder {
       label: 'Electron',
       submenu: [
         {
-          label: 'About ElectronReact',
+          label: 'About IR-SYS-A1-K173654',
           // @ts-ignore
           selector: 'orderFrontStandardAboutPanel:'
         },
@@ -61,7 +61,7 @@ export default class MenuBuilder {
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide ElectronReact',
+          label: 'Hide IR-SYS-A1-K173654',
           accelerator: 'Command+H',
           selector: 'hide:'
         },

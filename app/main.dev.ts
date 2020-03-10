@@ -66,7 +66,8 @@ const createWindow = async () => {
           }
         : {
             blinkFeatures: 'OverlayScrollbars',
-            preload: path.join(__dirname, 'dist/renderer.prod.js')
+            preload: path.join(__dirname, 'dist/renderer.prod.js'),
+            devTools: false
           }
   });
 

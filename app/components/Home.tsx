@@ -10,7 +10,9 @@ import {
   Input,
   Popup,
   Button,
-  Message
+  Message,
+  Loader,
+  Label
 } from 'semantic-ui-react';
 import SweetAlert from 'sweetalert-react';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -59,9 +61,15 @@ export default function Home(props: Props) {
     })
       .then(response => {
         console.log(response);
+        setLoadingStatus(false);
+        setAlert({
+          status: true,
+          title: 'Indexing Complete',
+          text: 'Documents Have Been Indexed'
+        });
         return response;
       })
-      .catch(console.error());
+      .catch(e => console.error(e));
   };
   const postQuery = () => {
     const formd = new FormData();
@@ -126,6 +134,7 @@ export default function Home(props: Props) {
       })
       .catch(err => {
         console.log(err);
+
         setAlert({ status: true, title: err, text: err.response.data.message });
       });
   };
@@ -141,7 +150,7 @@ export default function Home(props: Props) {
           setServerDown(true);
         });
 
-      AxiosProxy.get('/authentication/get_csrf/')
+      return AxiosProxy.get('/authentication/get_csrf/')
         .then(response => {
           console.log(response.data.csrfToken);
           session.defaultSession.cookies.set({
@@ -151,10 +160,11 @@ export default function Home(props: Props) {
             expirationDate: 0
           });
           setCookie(response.data.csrfToken);
+          setLoadingStatus(false);
           return response;
         })
         .catch(err => {
-          console.log(err);
+          return console.log(err);
         });
     }
   };
@@ -166,12 +176,36 @@ export default function Home(props: Props) {
 
   return (
     <>
+      <Row style={{ marginTop: '20px' }}>
+        <Col md={{ size: 2, offset: 2 }}>
+          <Label>
+            {process.env.NODE_ENV === 'development'
+              ? ' Mode : DEV MODE'
+              : 'Mode: PROD MODE'}
+          </Label>
+        </Col>
+
+        <Col md={{ size: 3, offset: 5 }}>
+          <Popup
+            position="bottom center"
+            // eslint-disable-next-line prettier/prettier
+            trigger={(
+              <Button onClick={() => postStartIndexer()}>
+                Re-Index Documents
+              </Button>
+              // eslint-disable-next-line prettier/prettier
+              )}
+          >
+            <Popup.Content>This takes a few seconds.</Popup.Content>
+          </Popup>
+        </Col>
+      </Row>
       <div
         style={{
           alignContent: 'center',
           textAlign: 'center',
           verticalAlign: 'middle',
-          marginTop: '200px',
+          marginTop: '120px',
           marginBottom: '20px'
         }}
       >
@@ -186,6 +220,7 @@ export default function Home(props: Props) {
           ))}
         </h1>
         <h1>Assignment # 1</h1>
+        {queryTypes.length === 0 ? <Loader active inline /> : null}
       </div>
       <Container p="100px" l="10px">
         {serverDown ? (
@@ -209,7 +244,6 @@ export default function Home(props: Props) {
               // eslint-disable-next-line prettier/prettier
               trigger={(
                 <Input
-                  loading={loadingStatus}
                   style={{ width: '100%' }}
                   placeholder="Enter Your Query Here"
                   onChange={event => setQuery(event.target.value)}
