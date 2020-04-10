@@ -1,9 +1,9 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "IR-SYS-A1",
+  "name": "ir-sys-a2",
+  "productName": "IR-SYS-A2",
   "proxy": "http://localhost:8000",
   "version": "1.0.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "description": "A React-Redux based Front-end Web Application For Information Retrieval - Assignment 2 - CS317 - FAST NUCES (Karachi)",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
@@ -52,7 +52,7 @@
     ]
   },
   "build": {
-    "productName": "IR-SYS-A1-K173654",
+    "productName": "IR-SYS-A2-K173654",
     "appId": "org.develar.K173654",
     "files": [
       "dist/",
