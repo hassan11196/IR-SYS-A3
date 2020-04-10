@@ -1,7 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
+// @ts-ignore
 import { Container, Row, Col } from 'reactstrap';
+// @ts-ignore
 import {
   Header,
   Grid,
@@ -12,30 +14,35 @@ import {
   Message,
   Segment
 } from 'semantic-ui-react';
+// @ts-ignore
 import SweetAlert from 'sweetalert-react';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import Highlighter from 'react-highlight-words';
+// @ts-ignore
+import {Cookies} from 'js-cookie';
 import { connect } from 'http2';
 import { isArray } from 'util';
-import AxiosProxy from '../AxiosProxy';
+import axios from 'axios';
+// import axios from '../axios';
 import 'semantic-ui-css/semantic.min.css';
 
 import routes from '../constants/routes.json';
 
-const { session } = require('electron').remote;
+// const { session } = require('electron').remote;
 
-AxiosProxy.defaults.xsrfCookieName = 'csrftoken';
-AxiosProxy.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
-// AxiosProxy.defaults.adapter = require('axios/lib/adapters/http');
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
+// axios.defaults.adapter = require('axios/lib/adapters/http');
+
 type Props = {
   updateDocs: () => void;
   clearDocs: () => void;
   docsPostingList: object;
-  history: object;
+  docs:any;
+  history: any;
 };
 const FileDisplay = (props: Props) => {
-  const { updateDocs, clearDocs, docsPostingList, history } = props;
+  const { updateDocs, clearDocs, history } = props;
 
   const { docId } = useParams();
   const GoogleColors = ['#4285F4', '#DB4437', '#F4B400', '#0F9D58'];
@@ -78,7 +85,7 @@ const FileDisplay = (props: Props) => {
   useEffect(() => {
     // setPPL(docsPostingList[docId]);
     // pagePostingList =
-    AxiosProxy.get(`static/speech_${docId}.txt`)
+    axios.get(`static/speech_${docId}.txt`)
       .then(response => {
         setDocs(response.data);
         const text = response.data.split('\n')[1];
@@ -107,7 +114,7 @@ const FileDisplay = (props: Props) => {
         console.log(er);
         setAlert({ status: true, title: '', text: er.message });
       });
-  }, [pagePostingList, docs, docsPostingList, reRender]);
+  }, [pagePostingList, docs, reRender]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   // eslint-disable-next-line react/display-name
@@ -145,9 +152,9 @@ const FileDisplay = (props: Props) => {
         </div>
 
         <Segment.Group>
-          {docsPostingList === [] ||
-          docsPostingList === undefined ||
-          docsPostingList === null ? (
+          {/* {props.docs === [] ||
+          props.docs === undefined ||
+          props.docs === null ? (
             [docs.split('\n')[0]].map((line, index) => {
               return (
                 <Segment key={line[5] + index}>
@@ -170,34 +177,7 @@ const FileDisplay = (props: Props) => {
             })
           ) : (
             <h1>Invalid Document</h1>
-          )}
-
-          {!(
-            linesToShow === [] ||
-            linesToShow === undefined ||
-            linesToShow === null
-          ) ? (
-            linesToShow.map((line, index) => {
-              return (
-                <Segment key={line[5] + index}>
-                  <div style={{ display: 'inline' }}>
-                    <p
-                      key={line[0] + index}
-                      style={{
-                        backgroundColor: 'yellow',
-
-                        color: 'black'
-                      }}
-                    >
-                      {line}
-                    </p>
-                  </div>
-                </Segment>
-              );
-            })
-          ) : (
-            <h1>Invalid Posting</h1>
-          )}
+          )} */}
           <Segment>
             <span>
               {!(
@@ -224,6 +204,33 @@ const FileDisplay = (props: Props) => {
               ) : null}
             </span>
           </Segment>
+          {!(
+            linesToShow === [] ||
+            linesToShow === undefined ||
+            linesToShow === null
+          ) ? (
+            linesToShow.map((line, index) => {
+              return (
+                <Segment key={line[5] + index}>
+                  <div style={{ display: 'inline' }}>
+                    <p
+                      key={line[0] + index}
+                      style={{
+                        backgroundColor: 'yellow',
+
+                        color: 'black'
+                      }}
+                    >
+                      {line}
+                    </p>
+                  </div>
+                </Segment>
+              );
+            })
+          ) : (
+            <h1>Invalid Posting</h1>
+          )}
+          
         </Segment.Group>
       </Container>
       <SweetAlert
