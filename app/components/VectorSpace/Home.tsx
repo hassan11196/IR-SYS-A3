@@ -1,9 +1,9 @@
 /* eslint-disable no-restricted-globals */
 /* eslint-disable react/no-array-index-key */
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Container, Row, Col } from "reactstrap";
-import { Cookies } from "js-cookie";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Container, Row, Col } from 'reactstrap';
+import { Cookies } from 'js-cookie';
 import {
   Header,
   Grid,
@@ -17,19 +17,19 @@ import {
   Image,
   Modal,
   Icon
-} from "semantic-ui-react";
-import Select from 'react-select'
-import SweetAlert from "sweetalert-react";
-import "bootstrap/dist/css/bootstrap.css";
-import axios from "axios";
-// import axios from '../axios';
-import "semantic-ui-css/semantic.min.css";
-import routes from "../../constants/routes.json";
+} from 'semantic-ui-react';
+import Select from 'react-select';
+import SweetAlert from 'sweetalert-react';
+import 'bootstrap/dist/css/bootstrap.css';
+// import axios from "axios";
+import axios from '../../AxiosProxy';
+import 'semantic-ui-css/semantic.min.css';
+import routes from '../../constants/routes.json';
 // import { updateDocs, clearDocs } from '../actions/docPostingList';
 // import docPostingList from '../reducers/docPostingList';
 
-axios.defaults.xsrfCookieName = "csrftoken";
-axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFTOKEN';
 // axios.defaults.adapter = require('axios/lib/adapters/http');
 type Props = {
   updateDocs: () => void;
@@ -39,21 +39,21 @@ type Props = {
 export default function Home(props: Props) {
   const { updateDocs, clearDocs } = props;
 
-  const GoogleColors = ["#4285F4", "#DB4437", "#F4B400", "#0F9D58"];
+  const GoogleColors = ['#4285F4', '#DB4437', '#F4B400', '#0F9D58'];
   const [dataFetched, setDataFetched] = useState(false);
   const [planets, setPlanets] = useState({});
-  const [query, setQuery] = useState("");
-  const [cookie, setCookie] = useState("");
+  const [query, setQuery] = useState('');
+  const [cookie, setCookie] = useState('');
   const [queryTypes, setQueryTypes] = useState([]);
   const [alpha, setalpha] = useState(0.0005);
   const [loadingStatus, setLoadingStatus] = useState(false);
-  const [alert, setAlert] = useState({ status: false, title: "", text: "" });
+  const [alert, setAlert] = useState({ status: false, title: '', text: '' });
   const [docs, setDocs] = useState([]);
   const [queryFetched, setQueryFetchStatus] = useState(false);
   const [LocalPostingList, setLocalPostingList] = useState([]);
   const [firstPage, setFirstPage] = useState(0);
   const [serverDown, setServerDown] = useState(false);
-  const [resultyType, setResultType] = useState("set");
+  const [resultyType, setResultType] = useState('set');
   const [vsmFunctions, setVsmFunctions] = useState([]);
   const [choiceFunctions, setChoiceFunctions] = useState([]);
   const [modalState, setModalState] = useState(false);
@@ -65,22 +65,22 @@ export default function Home(props: Props) {
   };
   const postStartIndexer = () => {
     const formd = new FormData();
-    formd.append("csrfmiddlewaretoken", cookie);
-    formd.append("code", "start");
-    formd.append("tf_func", newTf === '' ? 'natural' : newTf );
-    formd.append("idf_func", newIDF === '' ? 'idf' : newIDF);
-    formd.append("norm_func", "none");
+    formd.append('csrfmiddlewaretoken', cookie);
+    formd.append('code', 'start');
+    formd.append('tf_func', newTf === '' ? 'natural' : newTf);
+    formd.append('idf_func', newIDF === '' ? 'idf' : newIDF);
+    formd.append('norm_func', 'none');
 
     const res = axios
-      .post("/vsm/indexer/", formd, {
+      .post('/vsm/indexer/', formd, {
         withCredentials: true
       })
       .then(response => {
         console.log(response);
         setAlert({
           status: true,
-          title: "Indexing Complete",
-          text: "Documents Have Been Indexed"
+          title: 'Indexing Complete',
+          text: 'Documents Have Been Indexed'
         });
         return response;
       })
@@ -93,16 +93,16 @@ export default function Home(props: Props) {
     if (alpha < 0) {
       setAlert({
         status: true,
-        title: "Incorrect Alpha",
-        text: "Please Select a proper cutoff"
+        title: 'Incorrect Alpha',
+        text: 'Please Select a proper cutoff'
       });
       return;
     }
-    formd.append("csrfmiddlewaretoken", cookie);
-    formd.append("query", query);
-    formd.append("alpha", alpha.toString());
+    formd.append('csrfmiddlewaretoken', cookie);
+    formd.append('query', query);
+    formd.append('alpha', alpha.toString());
     const res = axios
-      .post("/vsm/query/", formd, {
+      .post('/vsm/query/', formd, {
         withCredentials: true
       })
       .then(response => {
@@ -147,7 +147,7 @@ export default function Home(props: Props) {
   const fetchData = () => {
     if (dataFetched === false) {
       axios
-        .get("/vsm/indexer")
+        .get('/vsm/indexer')
         .then(response => {
           setVsmFunctions(response.data.data);
           // setDataFetched(true);
@@ -157,7 +157,7 @@ export default function Home(props: Props) {
           setServerDown(true);
         });
       axios
-        .get("/vsm/query")
+        .get('/vsm/query')
         .then(response => {
           setChoiceFunctions(response.data.data);
           setDataFetched(true);
@@ -168,11 +168,11 @@ export default function Home(props: Props) {
         });
 
       axios
-        .get("/authentication/get_csrf/")
+        .get('/authentication/get_csrf/')
         .then(response => {
           console.log(response.data.csrfToken);
 
-          Cookies.set("csrftoken", response.data.csrfToken);
+          Cookies.set('csrftoken', response.data.csrfToken);
           return response;
         })
         .catch(err => {
@@ -188,73 +188,96 @@ export default function Home(props: Props) {
 
   return (
     <>
-      <Row style={{ marginTop: "20px" }}>
+      <Row style={{ marginTop: '20px' }}>
         <Col md={{ size: 2, offset: 2 }}>
           <Label>
-            {process.env.NODE_ENV === "development"
-              ? " Mode : DEV MODE"
-              : "Mode: PROD MODE"}
+            {process.env.NODE_ENV === 'development'
+              ? ' Mode : DEV MODE'
+              : 'Mode: PROD MODE'}
           </Label>
         </Col>
         <Col md={{ size: 3, offset: 5 }}>
-          <Modal   open={modalState} size={"small"} trigger={<Button onClick={()=>setModalState(true)}>Re-Index Documents</Button>}>
-          
-            
-            <Modal.Header>Select VSM Configuration <div onClick={()=>setModalState(false)} style={{float:'right'}}><Icon name='remove' color={'black'} /></div></Modal.Header>
-            <Modal.Content> 
-            <Header>
-              Current Configuration :
-              </Header>
+          <Modal
+            open={modalState}
+            size="small"
+            trigger={
+              <Button onClick={() => setModalState(true)}>
+                Re-Index Documents
+              </Button>
+            }
+          >
+            } >
+            <Modal.Header>
+              Select VSM Configuration{' '}
+              <div
+                onClick={() => setModalState(false)}
+                style={{ float: 'right' }}
+              >
+                <Icon name="remove" color="black" />
+              </div>
+            </Modal.Header>
+            <Modal.Content>
+              <Header>Current Configuration :</Header>
               <Modal.Description>
-                
-                  <h5  style={{color:'black'}}>
-                  Date Time Indexed : {vsmFunctions['id']}
-                  </h5>
-                  <h5  style={{color:'black'}}>
-                  Tf Function :  {vsmFunctions['tf_func']}
-                  </h5>
-                  <h5  style={{color:'black'}}>
-                  Idf Function :  {vsmFunctions['idf_func']}
-                  </h5>
-                
+                <h5 style={{ color: 'black' }}>
+                  Date Time Indexed : {vsmFunctions.id}
+                </h5>
+                <h5 style={{ color: 'black' }}>
+                  Tf Function : {vsmFunctions.tf_func}
+                </h5>
+                <h5 style={{ color: 'black' }}>
+                  Idf Function : {vsmFunctions.idf_func}
+                </h5>
               </Modal.Description>
             </Modal.Content>
-            <Header>
-              New Configuration :
-              </Header>
+            <Header>New Configuration :</Header>
             <Modal.Content>
               {dataFetched ? (
                 <>
                   <Modal.Description>
                     <Header>Select Tf Function : Default is normal</Header>
                     <Select
-                      style={{color:'black'}}
+                      style={{ color: 'black' }}
                       placeholder="Select TF Function"
-                      options={choiceFunctions["tf"].map(cf => {
-                        return { key: cf[0], label: cf[0], value: cf[0], color:'black' };
+                      options={choiceFunctions.tf.map(cf => {
+                        return {
+                          key: cf[0],
+                          label: cf[0],
+                          value: cf[0],
+                          color: 'black'
+                        };
                       })}
-                      
-                      onChange={(event)=>console.log(setNewTf(event.value))}
+                      onChange={event => console.log(setNewTf(event.value))}
                     />
-                    
                   </Modal.Description>
-                  <br></br>
+                  <br />
                   <Modal.Description>
-                    <Header>Select IDF Function : Default is idf i.e log(N/Df)</Header>
+                    <Header>
+                      Select IDF Function : Default is idf i.e log(N/Df)
+                    </Header>
                     <Select
-                      onChange={(event)=>console.log(setNewIDF(event.value))}
+                      onChange={event => console.log(setNewIDF(event.value))}
                       placeholder="Select IDF Function"
-                      options={choiceFunctions["idf"].map(cf => {
-                        return { key: cf[0], label: cf[0], value: cf[0], color:'black' };
+                      options={choiceFunctions.idf.map(cf => {
+                        return {
+                          key: cf[0],
+                          label: cf[0],
+                          value: cf[0],
+                          color: 'black'
+                        };
                       })}
                     />
-                    
                   </Modal.Description>
-                  <br></br>
+                  <br />
                   <Popup
                     position="bottom center"
                     trigger={
-                      <Button onClick={() => {postStartIndexer(); setModalState(false)}}>
+                      <Button
+                        onClick={() => {
+                          postStartIndexer();
+                          setModalState(false);
+                        }}
+                      >
                         Confirm
                       </Button>
                     }
@@ -269,15 +292,15 @@ export default function Home(props: Props) {
       </Row>
       <div
         style={{
-          alignContent: "center",
-          textAlign: "center",
-          verticalAlign: "middle",
-          marginTop: "120px",
-          marginBottom: "20px"
+          alignContent: 'center',
+          textAlign: 'center',
+          verticalAlign: 'middle',
+          marginTop: '120px',
+          marginBottom: '20px'
         }}
       >
         <h1 style={{ fontSize: 65 }}>
-          {"Information Retrieval".split("").map((letter, index) => (
+          {'Information Retrieval'.split('').map((letter, index) => (
             <span
               key={letter + index}
               style={{ color: GoogleColors[index % 4] }}
@@ -292,7 +315,7 @@ export default function Home(props: Props) {
         {serverDown ? (
           <div>
             <Message color="red">Server Down</Message>
-            <div style={{ float: "right" }}>
+            <div style={{ float: 'right' }}>
               <Button
                 onClick={() => {
                   fetchData();
@@ -310,7 +333,7 @@ export default function Home(props: Props) {
               trigger={
                 <Input
                   loading={loadingStatus}
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   placeholder="Enter Your Query Here"
                   onChange={event => setQuery(event.target.value)}
                 />
@@ -350,7 +373,7 @@ export default function Home(props: Props) {
               trigger={
                 <Input
                   loading={loadingStatus}
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   placeholder="alpha"
                   value={alpha}
                   onChange={event => getNewAlpha(event.target.value)}
@@ -365,7 +388,7 @@ export default function Home(props: Props) {
         <br />
         <Row>
           <Col md={{ size: 2, offset: 5 }}>
-            <Form.Button style={{ width: "100%" }} onClick={postQuery}>
+            <Form.Button style={{ width: '100%' }} onClick={postQuery}>
               Submit
             </Form.Button>
           </Col>
@@ -374,10 +397,10 @@ export default function Home(props: Props) {
         {!queryFetched ? null : (
           <Message>
             <Message.Header>Query Present in Documents</Message.Header>
-            <div style={{ display: "inline-block", flex: "center" }}>
+            <div style={{ display: 'inline-block', flex: 'center' }}>
               {docs.map((doc, index) => {
                 return (
-                  <p style={{ display: "block", flex: "center" }} key={doc[0]}>
+                  <p style={{ display: 'block', flex: 'center' }} key={doc[0]}>
                     {`${index + 1}) docId : ${doc[0]}, 'Cosine Similarity : ${
                       doc[1]
                     } '`}
@@ -385,7 +408,7 @@ export default function Home(props: Props) {
                 );
               })}
             </div>
-            {resultyType === "set" ? null : (
+            {resultyType === 'set' ? null : (
               <Link to={`${routes.FILE}/${firstPage}`}>
                 <Button>View Query In Documents</Button>
               </Link>
@@ -397,7 +420,7 @@ export default function Home(props: Props) {
         show={alert.status}
         title={alert.title}
         text={alert.text}
-        onConfirm={() => setAlert({ status: false, title: "", text: "" })}
+        onConfirm={() => setAlert({ status: false, title: '', text: '' })}
       />
     </>
   );

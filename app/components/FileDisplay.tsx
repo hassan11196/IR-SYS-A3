@@ -19,11 +19,11 @@ import SweetAlert from 'sweetalert-react';
 
 import 'bootstrap/dist/css/bootstrap.css';
 // @ts-ignore
-import {Cookies} from 'js-cookie';
+import { Cookies } from 'js-cookie';
 import { connect } from 'http2';
 import { isArray } from 'util';
-import axios from 'axios';
-// import axios from '../axios';
+// import axios from 'axios';
+import axios from '../AxiosProxy';
 import 'semantic-ui-css/semantic.min.css';
 
 import routes from '../constants/routes.json';
@@ -38,7 +38,7 @@ type Props = {
   updateDocs: () => void;
   clearDocs: () => void;
   docsPostingList: object;
-  docs:any;
+  docs: any;
   history: any;
 };
 const FileDisplay = (props: Props) => {
@@ -85,7 +85,8 @@ const FileDisplay = (props: Props) => {
   useEffect(() => {
     // setPPL(docsPostingList[docId]);
     // pagePostingList =
-    axios.get(`static/speech_${docId}.txt`)
+    axios
+      .get(`static/speech_${docId}.txt`)
       .then(response => {
         setDocs(response.data);
         const text = response.data.split('\n')[1];
@@ -230,7 +231,6 @@ const FileDisplay = (props: Props) => {
           ) : (
             <h1>Invalid Posting</h1>
           )}
-          
         </Segment.Group>
       </Container>
       <SweetAlert
