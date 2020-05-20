@@ -53,7 +53,7 @@ export default class MenuBuilder {
       label: 'Electron',
       submenu: [
         {
-          label: 'About IR-SYS-A2-K173654',
+          label: 'About IR-SYS-A3-K173654',
           // @ts-ignore
           selector: 'orderFrontStandardAboutPanel:'
         },
@@ -61,7 +61,7 @@ export default class MenuBuilder {
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide IR-SYS-A2-K173654',
+          label: 'Hide IR-SYS-A3-K173654',
           accelerator: 'Command+H',
           selector: 'hide:'
         },
