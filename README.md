@@ -8,6 +8,18 @@ The Notebook Contains a KNN and K-means Implementation.
 
 - Check Notebook : IR-A3-K173654.ipynb
 
+#### KNN Algorithm 
+**Approach:** Supervised
+
+A k-nearest-neighbor is a data classification algorithm that attempts to determine what group a data point is in by looking at the data points around it.
+
+An algorithm, looking at one point on a grid, trying to determine if a point is in group A or B, looks at the states of the points that are near it. The range is arbitrarily determined, but the point is to take a sample of the data. If the majority of the points are in group A, then it is likely that the data point in question will be A rather than B, and vice versa.
+
+#### K-Mean Algorithm
+**Approach:** Unsupervised
+K-means clustering is a method used for clustering analysis, especially in data mining and statistics. It aims to partition a set of observations into a number of clusters (k), resulting in the partitioning of the data into Voronoi cells. It can be considered a method of finding out which group a certain object really belongs to.
+
+
 ### Desktop System:
 A GUI Based Executable is present that provides a Desktop Interface to the Django based web server which holds the implementation of KNN and Kmeans hosted on Heroku. It can classify and cluster documents and return results.
 
